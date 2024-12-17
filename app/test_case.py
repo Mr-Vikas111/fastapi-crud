@@ -21,7 +21,6 @@ def test_root(client):
     assert response.status_code == 200
 
 def test_create_user(client,mock_db):
-    response = client.post("/user/create/")
     data = {
     "mobile": "9089878786",
     "first_name": "harry",
