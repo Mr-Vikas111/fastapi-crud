@@ -1,3 +1,9 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
+# Add the root project directory to sys.path
 from fastapi import FastAPI
 from db import engine,db_dependancy
 from models import users
@@ -7,6 +13,12 @@ app = FastAPI()
 
 # db migrations
 users.Base.metadata.create_all(bind=engine)
+
+@app.get("/")
+async def root():
+    return {"message": "test case running",}
+
+
 
 @app.post("/user/create/")
 async def create_user(payload: user_schemas.UserData, db: db_dependancy):
