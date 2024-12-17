@@ -9,12 +9,12 @@ def client():
     client = TestClient(app)
     return client
 
-@pytest.fixture
-def mock_db():
-    db = MagicMock(spec=Session)
-    return db
+# @pytest.fixture
+# def mock_db():
+#     db = MagicMock(spec=Session)
+#     return db
 
-app.dependency_overrides = { "db_dependancy": lambda: mock_db() }
+# app.dependency_overrides = { "db_dependancy": lambda: mock_db() }
 
 def test_root(client):
     response = client.get("/")
