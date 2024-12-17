@@ -10,7 +10,7 @@ __pycache__/
 
 # Virtual environment
 env/
-.env
+# .env
 
 # FastAPI & Uvicorn
 *.db
