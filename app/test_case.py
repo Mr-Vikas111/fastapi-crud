@@ -14,7 +14,7 @@ def mock_db():
     db = MagicMock(spec=Session)
     return db
 
-app.dependency_overrides = { "db_dependancy": lambda: mock_db() }
+app.dependency_overrides = { "get_db": lambda: mock_db() }
 
 def test_root(client):
     response = client.get("/")
