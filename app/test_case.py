@@ -9,34 +9,40 @@ def client():
     client = TestClient(app)
     return client
 
-# @pytest.fixture
-# def mock_db():
-#     db = MagicMock(spec=Session)
-#     return db
+@pytest.fixture
+def mock_db():
+    db = MagicMock(spec=Session)
+    return db
 
-# app.dependency_overrides = { "db_dependancy": lambda: mock_db() }
+app.dependency_overrides = { "db_dependancy": lambda: mock_db() }
 
 def test_root(client):
     response = client.get("/")
     assert response.status_code == 200
 
-# def test_create_user(client,mock_db):
-#     response = client.post("/user/create/")
-#     data = {
-#     "mobile": "9089878786",
-#     "first_name": "harry",
-#     "last_name": "singh",
-#     "hashtags": [
-#         {
-#         "name": "sports"
-#         }
-#     ]
-#     }
-#     # Send POST request to the endpoint with the data
-#     response = client.post("/user/create/", json=data)
+def test_create_user(client,mock_db):
+    response = client.post("/user/create/")
+    data = {
+    "mobile": "9089878786",
+    "first_name": "harry",
+    "last_name": "singh",
+    "hashtags": [
+        {
+        "name": "sports"
+        }
+    ]
+    }
+    # Send POST request to the endpoint with the data
+    mock_db.add = MagicMock()
+    mock_db.commit = MagicMock()
+    mock_db.refresh = MagicMock()
     
-#     # Assert the response status code
-#     assert response.status_code == 200
-#     # Assert the response body matches the sent data
-#     # assert response.json() == data
+    response = client.post("/user/create/", json=data)
+    
+    # Assertions
+    assert response.status_code == 200
+    # Verify database operations were called
+    assert mock_db.add.called
+    assert mock_db.commit.called
+    assert mock_db.refresh.called
 
