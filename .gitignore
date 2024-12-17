@@ -1,0 +1,31 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pdb
+*.log
+*.swp
+*.swo
+
+# Virtual environment
+env/
+.env
+
+# FastAPI & Uvicorn
+*.db
+*.sqlite3
+*.log
+
+# pytest
+.cache/
+# VS Code
+.vscode/
+
+# Editor folders/files
+*~
+*#
+
+# OS specific
+.DS_Store
+
