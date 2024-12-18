@@ -7,7 +7,7 @@ import pytest
 from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker,Session
-from app.db import Base, get_db
+from app.dbconfigtest import Base, get_db
 from app.main import app
 from fastapi.testclient import TestClient
 from models import users
