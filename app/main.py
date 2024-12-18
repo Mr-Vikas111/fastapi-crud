@@ -4,10 +4,12 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 # Add the root project directory to sys.path
-from fastapi import FastAPI
-from db import engine,db_dependancy
+from fastapi import FastAPI,Depends
+from db import engine,get_db
 from models import users
 from schemas import user_schemas
+from sqlalchemy.orm import sessionmaker,Session
+
 
 app = FastAPI()
 
@@ -18,10 +20,9 @@ users.Base.metadata.create_all(bind=engine)
 async def root():
     return {"message": "test case running",}
 
-
-
 @app.post("/user/create/")
-async def create_user(payload: user_schemas.UserData, db: db_dependancy):
+async def create_user(payload: user_schemas.UserData, db: Session = Depends(get_db)):
+    
     user = users.User(
         mobile=payload.mobile,
         first_name=payload.first_name,

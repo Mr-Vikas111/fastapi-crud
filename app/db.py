@@ -36,8 +36,6 @@ Base = declarative_base()
 
 def get_db():
     db = SessionLocal()
-    print("db ->",db)
-
     try:
         yield db
     finally:
