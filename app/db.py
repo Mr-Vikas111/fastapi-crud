@@ -27,9 +27,10 @@ DB_PORT=config.DB_PORT
 
 
 if os.getenv('TESTING')== True:
-    DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost/testfastdb")
+    print("calling ->>>>")
+    DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb")
 else:
-    
+    print("calling DB setup->>>>")
     DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
     
 engine = create_engine(DATABASE_URL)
