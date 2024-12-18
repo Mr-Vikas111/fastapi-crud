@@ -20,8 +20,8 @@ DB_NAME="testfastdb"
 DB_SERVER="34.47.218.214"
 DB_PORT="5432"
 
-DATABASE_URL = SQLALCHEMY_DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
+engine = create_engine(DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
