@@ -39,7 +39,8 @@ jobs:
           echo "GCP_CREDENTIALS is empty. Please check your secret.";
           exit 1;
         fi
-        # Write the secret to a file and reformat the JSON
+        
+        
         echo "$GCP_CREDENTIALS" > db_cred.json
         cat db_cred.json | python -m json.tool > valid_db_cred.json
         mv valid_db_cred.json db_cred.json
