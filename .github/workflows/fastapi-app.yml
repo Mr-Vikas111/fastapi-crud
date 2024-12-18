@@ -43,11 +43,14 @@ jobs:
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install psycopg2  # PostgreSQL adapter for Python
-        sudo apt-get install -y dockerize  # Install dockerize to wait for PostgreSQL
 
     - name: Wait for PostgreSQL to be ready
       run: |
-        dockerize -wait tcp://localhost:5432 -timeout 1m
+        # Wait for PostgreSQL to be ready
+        until pg_isready -U testfastdbuser -d testfastdb -h localhost; do
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 2
+        done
 
     - name: Run Tests
       run: |
