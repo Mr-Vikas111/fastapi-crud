@@ -11,7 +11,7 @@ __pycache__/
 # Virtual environment
 env/
 .env
-app/db_cred.json
+db_cred.json
 
 # FastAPI & Uvicorn
 *.db
