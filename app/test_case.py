@@ -56,7 +56,7 @@ def test_create_user(client_with_db):
     print("Test Database URL:", engine.url)
 
     payload = {
-        "mobile": "6758948758",
+        "mobile": "675894875811111",
         "first_name": "John",
         "last_name": "Doe",
         "hashtags": [{"name": "test"}]

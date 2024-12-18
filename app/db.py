@@ -25,8 +25,6 @@ DB_NAME=config.DB_NAME
 DB_SERVER=config.DB_SERVER
 DB_PORT=config.DB_PORT
 
-print(" #### TESTING ->",os.getenv('TESTING'))
-
 if os.getenv('TESTING') == 'True':
     print("testing -> db -> True")
     DATABASE_URL = "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
