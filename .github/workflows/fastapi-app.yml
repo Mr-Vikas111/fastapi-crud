@@ -55,10 +55,26 @@ jobs:
           sleep 2
         done
 
-    - name: Run Tests
-      run: |
-        # Set up the DATABASE_URL environment variable for PostgreSQL
-        export DATABASE_URL="postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
-        export TESTING=True
-        pytest --maxfail=1 --disable-warnings -q  
+    # - name: Run Tests
+    #   run: |
+    #     # Set up the DATABASE_URL environment variable for PostgreSQL
+    #     export DATABASE_URL="postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
+    #     export TESTING=True
+    #     pytest --maxfail=1 --disable-warnings -q  
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
+      TESTING: True
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: |
+          # Set up the DATABASE_URL environment variable for PostgreSQL
+          export DATABASE_URL="postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
+          export TESTING=True
+          pytest --maxfail=1 --disable-warnings -q  
 
