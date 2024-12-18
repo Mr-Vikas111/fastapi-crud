@@ -24,7 +24,7 @@ DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_P
 engine = create_engine(DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
+print("test")
 def init_db():
     # Create the tables for the test database
     Base.metadata.create_all(bind=engine)
