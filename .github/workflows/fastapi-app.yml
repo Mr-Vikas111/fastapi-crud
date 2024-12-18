@@ -9,13 +9,13 @@ on:
 permissions:
   contents: read
 
-env:
-  TESTING: True
-  DATABASE_URL:  "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost/testfastdb"
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      TESTING: True
+      DATABASE_URL:  "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost/testfastdb"
+
 
     services:
       postgres:
