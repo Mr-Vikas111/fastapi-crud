@@ -11,6 +11,7 @@ permissions:
 
 env:
   TESTING: True
+  DATABASE_URL:  "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost/testfastdb"
 
 jobs:
   build:
