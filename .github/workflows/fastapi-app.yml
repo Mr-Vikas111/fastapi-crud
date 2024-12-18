@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TESTING: True
-      DATABASE_URL:  "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost/testfastdb"
+      DATABASE_URL:  "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
 
     services:
       postgres:
@@ -55,38 +55,9 @@ jobs:
           sleep 2
         done
 
-    # - name: Run Tests
-    #   run: |
-    #     # Set up the DATABASE_URL environment variable for PostgreSQL
-    #     export DATABASE_URL="postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
-    #     export TESTING=True
-    #     pytest --maxfail=1 --disable-warnings -q  
-        
-  test:
-    runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
-      TESTING: True
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install psycopg2  # PostgreSQL adapter for Python
-
     - name: Run Tests
       run: |
         # Set up the DATABASE_URL environment variable for PostgreSQL
         export DATABASE_URL="postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
         export TESTING=True
-        pytest --maxfail=1 --disable-warnings -q  
-
+        pytest --maxfail=1 --disable-warnings -q
