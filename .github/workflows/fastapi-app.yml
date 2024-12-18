@@ -27,28 +27,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install psycopg2  # PostgreSQL adapter for Python
         
   test:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
       TESTING: True
-    
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: testfastdbuser
-          POSTGRES_PASSWORD: testfastdbuser1234
-          POSTGRES_DB: testfastdb
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U testfastdbuser -d testfastdb"
-          --health-timeout=30s
-          --health-retries=3
-          --health-start-period=5s
 
     steps:
     - name: Checkout Repository
@@ -67,8 +50,4 @@ jobs:
 
     - name: Run Tests
       run: |
-        # Set up the DATABASE_URL environment variable for PostgreSQL
-        export DATABASE_URL="postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
-        export TESTING=True
-        pytest --maxfail=1 --disable-warnings -q  
-
+        pytest
