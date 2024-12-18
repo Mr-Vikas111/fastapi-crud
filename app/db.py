@@ -27,7 +27,14 @@ DB_PORT=config.DB_PORT
 
 print(" #### TESTING ->",os.getenv('TESTING'))
 
-DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
+if os.getenv('TESTING') == True:
+    print("testing -> db -> True")
+    DATABASE_URL = "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
+else:
+    print("testing -> db -> False")
+    DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
+
+# DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
