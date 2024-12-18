@@ -1,7 +1,12 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 from fastapi import APIRouter
 from schemas import user_schemas
 from fastapi.exceptions import HTTPException
-from db import db
+from dbconfig import db
 
 router = APIRouter()
 
