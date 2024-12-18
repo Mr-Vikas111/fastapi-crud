@@ -1,27 +1,38 @@
-from fastapi import Depends, APIRouter
-from models import users
+from fastapi import APIRouter
 from schemas import user_schemas
-from sqlalchemy.orm import Session
-from db import get_db,engine
+from fastapi.exceptions import HTTPException
+from db import db
 
 router = APIRouter()
-users.Base.metadata.create_all(bind=engine)
 
-@router.get("/")
-async def root():
-    return {"message": "test case running",}
+@router.post("/user/create_new/")
+async def create_new_user(payload: user_schemas.UserData):
+    try:
+        # Reference to the Firestore collection
+        users_ref = db.collection("users")
+        # Add a new document with the user data
+        request_payload = payload.dict()
+        doc_ref, _ = users_ref.add(request_payload)
+        return {"message": "User created successfully!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/user/create/")
-async def create_user(payload: user_schemas.UserData, db: Session = Depends(get_db)):
+@router.get("/user/detail_user/")
+def get_user_by_id(doc_id: str):
+    """Fetch a user by their document ID from Firestore."""
+    user_ref = db.collection("users").document(doc_id)
+    user = user_ref.get()
+    if user.exists:
+        return user.to_dict()
+    return None
+
+@router.get("/user/user_list/")
+def get_all_users():
+    """Fetch all users from Firestore."""
+    users_ref = db.collection("users")
+    users = users_ref.stream()  # This retrieves all documents in the collection
     
-    user = users.User(
-        mobile=payload.mobile,
-        first_name=payload.first_name,
-        last_name=payload.last_name,
-    )
-    for hashtag in payload.hashtags:
-        user.hashtags.append(users.HashTag(name=hashtag.name))
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return {"message": "payload created", "payload": payload}
+    # Convert each document to a dictionary and return as a list
+    user_list = [{"id": user.id, **user.to_dict()} for user in users]
+    
+    return user_list
