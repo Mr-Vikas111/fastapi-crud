@@ -20,11 +20,10 @@ DB_NAME="testfastdb"
 DB_SERVER="34.47.218.214"
 DB_PORT="5432"
 
-DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL = "postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
 engine = create_engine(DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-print("test")
 def init_db():
     # Create the tables for the test database
     Base.metadata.create_all(bind=engine)
