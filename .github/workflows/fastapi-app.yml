@@ -73,8 +73,5 @@ jobs:
 
       - name: Run Tests
         run: |
-          # Set up the DATABASE_URL environment variable for PostgreSQL
-          export DATABASE_URL="postgresql+psycopg2://testfastdbuser:testfastdbuser1234@localhost:5432/testfastdb"
-          export TESTING=True
-          pytest --maxfail=1 --disable-warnings -q  
+          pytest 
 
