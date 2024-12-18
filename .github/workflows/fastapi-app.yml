@@ -45,11 +45,10 @@ jobs:
         mv valid_db_cred.json db_cred.json
         export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/db_cred.json
 
-    - name: Debug JSON File
+    - name: Debug GCP Credentials
       run: |
-        echo "Validating db_cred.json:"
-        cat db_cred.json
-        python -m json.tool db_cred.json
+        echo "Debugging GCP Credentials:"
+        echo "$GCP_CREDENTIALS" | head -n 5 # Prints the first 5 lines for debug (masked)
 
     - name: Run Tests
       run: pytest
