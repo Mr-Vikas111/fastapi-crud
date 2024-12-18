@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from schemas import user_schemas
 from fastapi.exceptions import HTTPException
-from db import db
+from dbconfig import db
 
 router = APIRouter()
 
