@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  TESTING: True
+
 jobs:
   build:
     runs-on: ubuntu-latest
