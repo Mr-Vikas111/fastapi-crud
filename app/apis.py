@@ -1,17 +1,17 @@
-from fastapi import Depends
-from main import app
+from fastapi import Depends, APIRouter
 from models import users
 from schemas import user_schemas
 from sqlalchemy.orm import Session
 from db import get_db,engine
 
+router = APIRouter()
 users.Base.metadata.create_all(bind=engine)
 
-@app.get("/")
+@router.get("/")
 async def root():
     return {"message": "test case running",}
 
-@app.post("/user/create/")
+@router.post("/user/create/")
 async def create_user(payload: user_schemas.UserData, db: Session = Depends(get_db)):
     
     user = users.User(

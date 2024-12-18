@@ -5,12 +5,11 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 # Add the root project directory to sys.path
 from fastapi import FastAPI
+import apis
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    return {"message": "test case running",}
+app.include_router(apis.router)
 
 # @app.post("/user/create/")
 # async def create_user(payload: user_schemas.UserData, db: Session = Depends(get_db)):
