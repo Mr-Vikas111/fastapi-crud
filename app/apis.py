@@ -5,23 +5,27 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from fastapi import APIRouter
 from schemas.user_schemas import *
+from schemas.team_schemas import *
 from fastapi.exceptions import HTTPException
 from dbconfig import db
-from typing import  Union
+from typing import  Union, List
 
 
 
 router = APIRouter()
 
 # create user detail information
-@router.post("/user/create/",response_model=UserRequest)
-async def create_new_user(payload:  UserRequest):
+@router.post("/user/create/")
+async def create_new_user(payload:  Union[ProjectOne,ProjectTwo,ProjectThree]):
     try:
         users_ref = db.collection("users")
         request_payload = payload.dict()
         _,data_ref = users_ref.add(request_payload)
         if data_ref:
             saved_data = {**request_payload, "id": data_ref.id}
+            
+            
+            print("saved_data",saved_data)
             return {"message": "User created successfully!","response":saved_data}
         else:
             return {"message": "Failed","response":{}}
@@ -30,7 +34,7 @@ async def create_new_user(payload:  UserRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 # retrive user detail information
-@router.get("/user/detail/{user_id}",response_model=UserRequest)
+@router.get("/user/detail/{user_id}",response_model= Union[ProjectOne,ProjectTwo,ProjectThree])
 def get_user_by_id(user_id: str):
     """Fetch a user by their document ID from Firestore."""
     user_ref = db.collection("users").document(user_id)
@@ -51,8 +55,8 @@ def get_all_users():
     return user_list
 
 # Update user information in Firestore
-@router.patch("/user/update/{user_id}",response_model=UserRequest)
-async def update_user(user_id: str, payload: UserRequest):
+@router.patch("/user/update/{user_id}")
+async def update_user(user_id: str, payload:  Union[ProjectOne,ProjectTwo,ProjectThree]):
     try:
         # Reference to the user document
         doc_ref = db.collection("users").document(user_id)
@@ -61,8 +65,6 @@ async def update_user(user_id: str, payload: UserRequest):
         doc = doc_ref.get()
         if not doc.exists:
             raise HTTPException(status_code=404, detail="User not found")
-        
-        payload = payload.project
        
         if payload.project_id == 1:
             update_data={
@@ -117,4 +119,39 @@ async def delete_user(user_id: str):
 
     except Exception as e:
         # If any error occurs, raise an internal server error
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+##### API FOR EMPLOYEE DETAIL
+
+
+# create user detail information
+@router.post("/employee/create/")
+async def create_employee(payload: Employee):
+    try:
+        users_ref = db.collection("employee")
+        request_payload = payload.dict()
+        _,data_ref = users_ref.add(request_payload)
+        if data_ref:
+            saved_data = {**request_payload, "id": data_ref.id}
+            return {"employee":saved_data}
+        else:
+            return {"message": "Failed","response":{}}
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# create user detail information
+@router.get("/employee/list/",response_model=List[Employee])
+async def list_employee():
+    try:
+        employee_ref = db.collection("employee")
+        employees = employee_ref.stream()
+        
+        employee_list = [{"id": user.id, **user.to_dict()} for user in employees]
+        
+        return employee_list
+                
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
